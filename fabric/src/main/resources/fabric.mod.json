@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.jason13official.peaceful_hunger.PeacefulHungerFabric"
+      "io.github.jason13official.examplemod.ExampleModFabric"
     ],
     "client": [
-      "io.github.jason13official.peaceful_hunger.PeacefulHungerClientFabric"
+      "io.github.jason13official.examplemod.ExampleModClientFabric"
     ]
   },
   "mixins": [
@@ -27,10 +27,11 @@
     "${mod_id}.fabric.mixins.json"
   ],
   "depends": {
-    "fabricloader": "*",
+    "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": "*",
     "minecraft": "${fabric_minecraft_version_range}",
-    "java": ">=${java_version}"
+    "java": ">=${java_version}",
+    "monolib": "*"
   },
   "suggests": {
     "another-mod": "*"
