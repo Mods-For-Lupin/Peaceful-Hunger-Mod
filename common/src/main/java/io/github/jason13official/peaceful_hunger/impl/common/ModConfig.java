@@ -12,6 +12,7 @@ public class ModConfig {
   private static ModConfig INSTANCE = new ModConfig();
   private static boolean SYNCED_TO_REMOTE = false;
   public Difficulty hungerDifficulty = Difficulty.EASY;
+  private String hungerDifficultyString = "easy";
 
   public static ModConfig get() {
     return INSTANCE;
@@ -32,7 +33,7 @@ public class ModConfig {
     try {
       Files.createDirectories(configDir);
     } catch (Exception e) {
-      Constants.LOG.error("Failed to create config directory, using defaults", e);
+      Constants.LOG.error("[Peaceful Hunger] Failed to create config directory, using defaults", e);
       return;
     }
 
@@ -42,11 +43,33 @@ public class ModConfig {
       }
 
       ModConfig loaded = new ModConfig();
-      loaded.hungerDifficulty = config.getOrElse("hunger_difficulty", Difficulty.EASY);
 
+      // get raw value from config
+      loaded.hungerDifficultyString = config.getOrElse("hunger_difficulty", "easy");
+      Constants.LOG.info("[Peaceful Hunger] Got difficulty string from config: {}", loaded.hungerDifficultyString);
+
+      // set real value on config
+      Difficulty nullableDifficulty = Difficulty.byName(loaded.hungerDifficultyString);;
+
+      if (nullableDifficulty == null) {
+        String lower = loaded.hungerDifficultyString.toLowerCase();
+        nullableDifficulty = Difficulty.byName(lower);
+      }
+
+      if (nullableDifficulty == null) {
+        Constants.LOG.info("[Peaceful Hunger] Failed to read provided string as difficulty: {}", loaded.hungerDifficultyString.toLowerCase());
+        Constants.LOG.info("[Peaceful Hunger] Using default value \"easy\" for Difficulty.EASY");
+        Constants.LOG.info("[Peaceful Hunger] Supported difficulties: \"peaceful\", \"easy\", \"normal\", or \"hard\"");
+        nullableDifficulty = Difficulty.EASY;
+      }
+
+      loaded.hungerDifficulty = nullableDifficulty;
+      Constants.LOG.info("[Peaceful Hunger] Set hunger difficulty: {}", loaded.hungerDifficulty.getSerializedName());
+
+      // set instance
       INSTANCE = loaded;
 
-      config.setComment("hunger_difficulty", " The difficulty used for depleting saturation / food levels");
+      config.setComment("hunger_difficulty", " Supported difficulties: \"peaceful\", \"easy\", \"normal\", or \"hard\"");
       config.set("hunger_difficulty", INSTANCE.hungerDifficulty);
       config.save();
     } catch (Exception e) {

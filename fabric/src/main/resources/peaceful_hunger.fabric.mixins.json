@@ -4,7 +4,10 @@
   "package": "io.github.jason13official.peaceful_hunger.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "PlayerMixin",
+    "FoodDataMixin"
+  ],
   "client": [
     "FabricTitleScreenMixin"
   ],

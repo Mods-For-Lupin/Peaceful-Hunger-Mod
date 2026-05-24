@@ -1,12 +1,10 @@
 package io.github.jason13official.peaceful_hunger;
 
 import io.github.jason13official.peaceful_hunger.impl.common.ModConfig;
-import io.github.jason13official.peaceful_hunger.impl.common.network.packet.ConfigSyncS2CPacket;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 
@@ -16,11 +14,11 @@ public class PeacefulHungerClientNeoForge {
 
     modEventBus.addListener((Consumer<FMLClientSetupEvent>) event -> PeacefulHungerClient.init());
 
-    modEventBus.addListener((Consumer<RegisterClientPayloadHandlersEvent>) event -> {
-      event.register(ConfigSyncS2CPacket.TYPE, (payload, context) -> {
-        ModConfig.get().sync(payload);
-      });
-    });
+//    modEventBus.addListener((Consumer<RegisterClientPayloadHandlersEvent>) event -> {
+//      event.register(ConfigSyncS2CPacket.TYPE, (payload, context) -> {
+//        ModConfig.get().sync(payload);
+//      });
+//    });
 
     NeoForge.EVENT_BUS.addListener((Consumer<EntityLeaveLevelEvent>) event -> {
       if (Minecraft.getInstance().player != null && event.getEntity() == Minecraft.getInstance().player) {
