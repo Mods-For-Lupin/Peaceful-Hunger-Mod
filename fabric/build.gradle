@@ -1,4 +1,5 @@
 plugins {
+    // id "org.jetbrains.gradle.plugin.idea-ext"
     id 'multiloader-loader'
     id 'fabric-loom'
     id 'com.gradleup.shadow'
@@ -13,12 +14,13 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
+    // implementation 'com.electronwill.night-config:toml:3.6.0'
     shadow 'com.electronwill.night-config:toml:3.6.0'
 }
 
 tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
 
-    // configurations = project.configurations.named('shadow').map { [it] }
+    configurations = project.configurations.named('shadow').map { [it] }
 
     // archiveAppendix = 'appenSec'
     // archiveExtension = ''
@@ -41,6 +43,7 @@ loom {
         accessWidenerPath.set(aw)
     }
     mixin {
+        // useLegacyMixinAp = true
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {

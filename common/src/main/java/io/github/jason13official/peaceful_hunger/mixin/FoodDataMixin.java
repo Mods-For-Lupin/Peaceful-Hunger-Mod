@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(FoodData.class)
 public class FoodDataMixin {
 
-  @ModifyVariable(method = "tick", at = @At("STORE"), name = "difficulty")
-  private Difficulty peaceful_hunger$tick(Difficulty difficulty) {
+  @ModifyVariable(method = "tick", at = @At("STORE"))
+  private Difficulty peaceful_hunger$tick$modifyFoodDifficulty(Difficulty difficulty) {
     return difficulty == Difficulty.PEACEFUL ? ModConfig.get().hungerDifficulty : difficulty;
   }
 }
