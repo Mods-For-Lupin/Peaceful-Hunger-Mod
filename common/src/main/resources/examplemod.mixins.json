@@ -4,7 +4,10 @@
   "package": "io.github.jason13official.examplemod.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_18",
-  "mixins": [],
+  "mixins": [
+    "FoodDataMixin",
+    "PlayerMixin"
+  ],
   "client": [
     "MinecraftMixin"
   ],
