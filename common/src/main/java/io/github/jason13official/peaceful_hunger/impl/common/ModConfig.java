@@ -12,6 +12,7 @@ public class ModConfig {
   private static ModConfig INSTANCE = new ModConfig();
   private static boolean SYNCED_TO_REMOTE = false;
   public Difficulty hungerDifficulty = Difficulty.EASY;
+  private String hungerDifficultyString = "easy";
 
   public static ModConfig get() {
     return INSTANCE;
@@ -42,11 +43,35 @@ public class ModConfig {
       }
 
       ModConfig loaded = new ModConfig();
-      loaded.hungerDifficulty = config.getOrElse("hunger_difficulty", Difficulty.EASY);
 
+      // get raw value from config
+      loaded.hungerDifficultyString = config.getOrElse("hunger_difficulty", "easy");
+      Constants.LOG.info("Got difficulty string from config: {}", loaded.hungerDifficultyString);
+
+      // set real value on config
+      Difficulty nullableDifficulty = Difficulty.byName(loaded.hungerDifficultyString);;
+
+      if (nullableDifficulty == null) {
+        // Constants.LOG.info("Failed to read provided string as difficulty: {}", loaded.hungerDifficultyString);
+        String lower = loaded.hungerDifficultyString.toLowerCase();
+        // Constants.LOG.info("Trying as lowercase name instead {}", lower);
+        nullableDifficulty = Difficulty.byName(lower);
+      }
+
+      if (nullableDifficulty == null) {
+        Constants.LOG.info("Failed to lowercase provided string and read as difficulty: {}", loaded.hungerDifficultyString.toLowerCase());
+        Constants.LOG.info("Using default value \"easy\" for Difficulty.EASY");
+        Constants.LOG.info("Supported difficulties: \"peaceful\", \"easy\", \"normal\", or \"hard\"");
+        nullableDifficulty = Difficulty.EASY;
+      }
+
+      loaded.hungerDifficulty = nullableDifficulty;
+      Constants.LOG.info("Set hunger difficulty: {}", loaded.hungerDifficulty.toString());
+
+      // set instance
       INSTANCE = loaded;
 
-      config.setComment("hunger_difficulty", " The difficulty used for depleting saturation / food levels");
+      config.setComment("hunger_difficulty", " Supported difficulties: \"peaceful\", \"easy\", \"normal\", or \"hard\"");
       config.set("hunger_difficulty", INSTANCE.hungerDifficulty);
       config.save();
     } catch (Exception e) {
