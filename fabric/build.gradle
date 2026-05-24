@@ -10,6 +10,9 @@ dependencies {
     }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    include(implementation("com.electronwill.night-config:core:3.6.0"))
+    include(implementation("com.electronwill.night-config:toml:3.6.0"))
 }
 
 loom {
