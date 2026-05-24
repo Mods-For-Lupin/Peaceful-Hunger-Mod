@@ -60,7 +60,7 @@ public class PeacefulHungerNeoForge {
       registrar.playToClient(ConfigSyncS2CPacket.TYPE, ConfigSyncS2CPacket.STREAM_CODEC);
     });
 
-    EVENT_BUS.addListener((Consumer<EntityJoinLevelEvent>) event -> {
+    NeoForge.EVENT_BUS.addListener((Consumer<EntityJoinLevelEvent>) event -> {
       if (event.getEntity() instanceof ServerPlayer serverPlayer) {
         PeacefulHunger.clientBoundPacketSender.accept(serverPlayer, new ConfigSyncS2CPacket(ModConfig.get().hungerDifficulty));
       }
