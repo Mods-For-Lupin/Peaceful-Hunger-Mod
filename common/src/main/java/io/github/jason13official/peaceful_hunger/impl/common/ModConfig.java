@@ -33,7 +33,7 @@ public class ModConfig {
     try {
       Files.createDirectories(configDir);
     } catch (Exception e) {
-      Constants.LOG.error("Failed to create config directory, using defaults", e);
+      Constants.LOG.error("[Peaceful Hunger] Failed to create config directory, using defaults", e);
       return;
     }
 
@@ -46,27 +46,25 @@ public class ModConfig {
 
       // get raw value from config
       loaded.hungerDifficultyString = config.getOrElse("hunger_difficulty", "easy");
-      Constants.LOG.info("Got difficulty string from config: {}", loaded.hungerDifficultyString);
+      Constants.LOG.info("[Peaceful Hunger] Got difficulty string from config: {}", loaded.hungerDifficultyString);
 
       // set real value on config
       Difficulty nullableDifficulty = Difficulty.byName(loaded.hungerDifficultyString);;
 
       if (nullableDifficulty == null) {
-        // Constants.LOG.info("Failed to read provided string as difficulty: {}", loaded.hungerDifficultyString);
         String lower = loaded.hungerDifficultyString.toLowerCase();
-        // Constants.LOG.info("Trying as lowercase name instead {}", lower);
         nullableDifficulty = Difficulty.byName(lower);
       }
 
       if (nullableDifficulty == null) {
-        Constants.LOG.info("Failed to lowercase provided string and read as difficulty: {}", loaded.hungerDifficultyString.toLowerCase());
-        Constants.LOG.info("Using default value \"easy\" for Difficulty.EASY");
-        Constants.LOG.info("Supported difficulties: \"peaceful\", \"easy\", \"normal\", or \"hard\"");
+        Constants.LOG.info("[Peaceful Hunger] Failed to read provided string as difficulty: {}", loaded.hungerDifficultyString.toLowerCase());
+        Constants.LOG.info("[Peaceful Hunger] Using default value \"easy\" for Difficulty.EASY");
+        Constants.LOG.info("[Peaceful Hunger] Supported difficulties: \"peaceful\", \"easy\", \"normal\", or \"hard\"");
         nullableDifficulty = Difficulty.EASY;
       }
 
       loaded.hungerDifficulty = nullableDifficulty;
-      Constants.LOG.info("Set hunger difficulty: {}", loaded.hungerDifficulty.toString());
+      Constants.LOG.info("[Peaceful Hunger] Set hunger difficulty: {}", loaded.hungerDifficulty.getSerializedName());
 
       // set instance
       INSTANCE = loaded;
