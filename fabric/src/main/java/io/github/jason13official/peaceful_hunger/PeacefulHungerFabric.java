@@ -21,11 +21,8 @@ public class PeacefulHungerFabric implements ModInitializer {
   public void onInitialize() {
 
     PeacefulHunger.init();
-    PeacefulHunger.clientBoundPacketSender = ServerPlayNetworking::send;
 
-    // 26.1.2
-    // PayloadTypeRegistry.clientboundPlay().register(ConfigSyncS2CPacket.TYPE, ConfigSyncS2CPacket.STREAM_CODEC);
-    // 1.21.1
+    PeacefulHunger.clientBoundPacketSender = ServerPlayNetworking::send;
     PayloadTypeRegistry.playS2C().register(ConfigSyncS2CPacket.TYPE, ConfigSyncS2CPacket.STREAM_CODEC);
 
     ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
@@ -34,9 +31,7 @@ public class PeacefulHungerFabric implements ModInitializer {
       }
     });
 
-    // 26.1.2
-    // DataResourceLoader.get().registerReloadListener(PeacefulHunger.identifier(Constants.MOD_ID), new ResourceReloadListener());
-    // 1.21.1
+    // ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ResourceReloadListener());
     ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(PeacefulHunger.identifier(Constants.MOD_ID), ResourceReloadListener::new);
   }
 
@@ -56,21 +51,16 @@ public class PeacefulHungerFabric implements ModInitializer {
     }
   }
 
-//  public static class ResourceReloadListener extends SimplePreparableReloadListener<Void> {
+//  public static class ResourceReloadListener implements SimpleSynchronousResourceReloadListener {
 //
 //    @Override
-//    public String getName() {
-//      return PeacefulHunger.identifier(Constants.MOD_ID).toString();
+//    public ResourceLocation getFabricId() {
+//      return PeacefulHunger.identifier(Constants.MOD_ID);
 //    }
 //
 //    @Override
-//    protected void apply(Void unused, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
-//      ModConfig.load(Services.PLATFORM.getConfigDirectory());
-//    }
-//
-//    @Override
-//    protected Void prepare(ResourceManager resourceManager, ProfilerFiller profilerFiller) {
-//      return null;
+//    public void onResourceManagerReload(ResourceManager resourceManager) {
+//      // ModConfig.load(Services.PLATFORM.getConfigDirectory());
 //    }
 //  }
 }

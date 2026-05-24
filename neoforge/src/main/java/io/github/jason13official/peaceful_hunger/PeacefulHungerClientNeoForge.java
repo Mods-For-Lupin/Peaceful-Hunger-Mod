@@ -14,12 +14,6 @@ public class PeacefulHungerClientNeoForge {
 
     modEventBus.addListener((Consumer<FMLClientSetupEvent>) event -> PeacefulHungerClient.init());
 
-//    modEventBus.addListener((Consumer<RegisterClientPayloadHandlersEvent>) event -> {
-//      event.register(ConfigSyncS2CPacket.TYPE, (payload, context) -> {
-//        ModConfig.get().sync(payload);
-//      });
-//    });
-
     NeoForge.EVENT_BUS.addListener((Consumer<EntityLeaveLevelEvent>) event -> {
       if (Minecraft.getInstance().player != null && event.getEntity() == Minecraft.getInstance().player) {
         ModConfig.unsync();

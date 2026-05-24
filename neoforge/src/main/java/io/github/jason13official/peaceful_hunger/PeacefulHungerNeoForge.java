@@ -3,11 +3,7 @@ package io.github.jason13official.peaceful_hunger;
 import io.github.jason13official.peaceful_hunger.impl.common.ModConfig;
 import io.github.jason13official.peaceful_hunger.impl.common.network.packet.ConfigSyncS2CPacket;
 import io.github.jason13official.peaceful_hunger.platform.Services;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -23,7 +19,6 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.RegisterEvent;
 
 @Mod(Constants.MOD_ID)
 public class PeacefulHungerNeoForge {
@@ -55,22 +50,12 @@ public class PeacefulHungerNeoForge {
     });
 
     NeoForge.EVENT_BUS.addListener((Consumer<AddReloadListenerEvent>) event -> {
-      // event.addListener(PeacefulHunger.identifier(Constants.MOD_ID), new ResourceReloadListener());
       event.addListener(new ResourceReloadListener());
     });
 
     if (FMLLoader.getDist() == Dist.CLIENT) {
       new PeacefulHungerClientNeoForge(EVENT_BUS);
     }
-  }
-
-  public <T> void bind(ResourceKey<Registry<T>> registryKey, Consumer<BiConsumer<T, ResourceLocation>> source) {
-
-    EVENT_BUS.addListener((Consumer<RegisterEvent>) event -> {
-      if (registryKey.equals(event.getRegistryKey())) {
-        source.accept((t, rl) -> event.register(registryKey, rl, () -> t));
-      }
-    });
   }
 
   public static class ResourceReloadListener extends SimplePreparableReloadListener<Void> {

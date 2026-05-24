@@ -3,10 +3,7 @@
   "minVersion": "0.8",
   "package": "io.github.jason13official.peaceful_hunger.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "FoodDataMixin",
-    "PlayerMixin"
-  ],
+  "mixins": [],
   "client": [
     "NeoForgeTitleScreenMixin"
   ],

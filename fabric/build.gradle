@@ -1,10 +1,7 @@
 plugins {
-    // id "org.jetbrains.gradle.plugin.idea-ext"
     id 'multiloader-loader'
     id 'fabric-loom'
-    id 'com.gradleup.shadow'
 }
-
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.layered {
@@ -14,27 +11,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
 
-    // implementation 'com.electronwill.night-config:toml:3.6.0'
-    shadow 'com.electronwill.night-config:toml:3.6.0'
-}
+    implementation group: 'com.electronwill.night-config', name: 'core', version: '3.6.0'
+    implementation group: 'com.electronwill.night-config', name: 'toml', version: '3.6.0'
 
-tasks.named('shadowJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
-
-    configurations = project.configurations.named('shadow').map { [it] }
-
-    // archiveAppendix = 'appenSec'
-    // archiveExtension = ''
-
-    archiveClassifier = 'actual'
-
-    var newpath = 'io.github.jason13official.mod_id.shadow.nightconfig'.replace("mod_id", mod_id)
-    relocate 'com.electronwill.nightconfig', newpath
-    // archiveClassifier.set('')
-}
-
-jar {
-    dependsOn shadowJar
-    mustRunAfter shadowJar
+    include group: 'com.electronwill.night-config', name: 'core', version: '3.6.0'
+    include group: 'com.electronwill.night-config', name: 'toml', version: '3.6.0'
 }
 
 loom {
@@ -43,7 +24,6 @@ loom {
         accessWidenerPath.set(aw)
     }
     mixin {
-        // useLegacyMixinAp = true
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {
